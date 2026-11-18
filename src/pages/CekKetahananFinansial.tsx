@@ -6,9 +6,8 @@ import React, { Component, useMemo, useState } from 'react';
 
 function AppleGeometricMark({ className = 'w-4 h-4' }) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
-      <path d="M15.4 3.2C14.3 3.3 13 4 12.3 4.9C11.7 5.6 11.2 6.8 11.4 8C12.6 8.1 13.9 7.4 14.6 6.5C15.2 5.7 15.6 4.5 15.4 3.2Z" />
-      <path d="M19.2 12.6C19.2 10.2 21.1 9 21.2 8.9C20.1 7.3 18.4 7.1 17.8 7C16.4 6.9 15 7.9 14.3 7.9C13.6 7.9 12.5 7 11.3 7C9.8 7 8.4 7.9 7.6 9.3C6 12.1 7.2 16.2 8.7 18.4C9.5 19.5 10.4 20.7 11.6 20.7C12.7 20.6 13.2 20 14.5 20C15.8 20 16.2 20.7 17.4 20.7C18.6 20.7 19.4 19.6 20.1 18.5C21 17.2 21.3 16 21.4 15.9C21.3 15.8 19.2 15 19.2 12.6Z" />
+    <svg viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd" className={className} aria-hidden="true">
+      <path d="M12 2L4 5.5v6.2c0 5.25 3.41 10.16 8 11.3 4.59-1.14 8-6.05 8-11.3V5.5L12 2zm-1.1 13.6L7.5 12.2l1.4-1.4 2 2 4.6-4.6 1.4 1.4-6 6z" />
     </svg>
   );
 }
