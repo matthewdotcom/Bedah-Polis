@@ -518,13 +518,46 @@ function WealthResilienceAppleApp() {
   const handleUnlockSubmit = (e) => {
     e.preventDefault();
     if (!leadName.trim()) return;
+
+    const kodeLaporan = `WR-${String(Date.now()).slice(-5)}`;
+    const statusLabel =
+      form.maritalStatus === 'single'
+        ? 'Single'
+        : form.maritalStatus === 'married'
+        ? 'Menikah'
+        : 'Menikah + Anak';
+
     setForm((prev) => ({
       ...prev,
       clientName: leadName.trim(),
       clientContact: leadContact.trim(),
     }));
-    setSavedTag(`WR-${String(Date.now()).slice(-5)}`);
+    setSavedTag(kodeLaporan);
     setIsUnlocked(true);
+
+    fetch(
+      'https://script.google.com/macros/s/AKfycbw59_hNN3nvGYySNGWdzyuv51tQgIrPTLuOxpF76LtSGODWylGeVmZ8GX7gBEJv1169Hg/exec',
+      {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
+        body: JSON.stringify({
+          kodeLaporan,
+          nama: leadName.trim(),
+          kontak: leadContact.trim(),
+          usia: form.age,
+          statusKeluarga: statusLabel,
+          penghasilanBulanan: form.monthlyIncome,
+          skorKetahanan: audit.resilienceScore,
+          kategori: audit.resilienceCategory,
+          celahKesehatan: audit.pillars[0]?.gapAmount || 0,
+          celahPenyakitKritis: audit.pillars[1]?.gapAmount || 0,
+          celahJiwa: audit.pillars[2]?.gapAmount || 0,
+        }),
+      }
+    ).catch(() => {});
   };
 
   const quickSearchItems = [
@@ -558,7 +591,7 @@ function WealthResilienceAppleApp() {
             aria-label="Global Navigation"
             className="max-w-[1024px] mx-auto h-full px-4 flex items-center justify-between text-[12px] font-normal tracking-[-0.01em] text-[#1D1D1F]"
           >
-            {/* Left Minimal Geometric Apple-Style Emblem */}
+            {/* Left Minimal Geometric Emblem */}
             <a
               href="#hero-duo"
               onMouseEnter={() => setActiveFlyout(null)}
@@ -616,7 +649,7 @@ function WealthResilienceAppleApp() {
           </nav>
         </header>
 
-        {/* Interactive Hover Mega-Menu Dropdown Flyout (Apple Watch Reference Style) */}
+        {/* Interactive Hover Mega-Menu Dropdown Flyout */}
         {activeFlyout && MEGA_MENUS[activeFlyout] && (
           <div className="hidden md:block bg-[#F5F5F7] border-b border-black/[0.08] shadow-sm transition-all duration-200">
             <div className="max-w-[1024px] mx-auto px-6 pt-8 pb-12 grid grid-cols-12 gap-8">
@@ -735,7 +768,7 @@ function WealthResilienceAppleApp() {
           2. ALTERNATING FULL-BLEED HERO SECTIONS + 12PX PURE WHITE GUTTERS
          ==================================================================== */}
       <main>
-        {/* HERO 1: Crisp Off-White #F5F5F7 (iPhone Duo Reference Style) */}
+        {/* HERO 1: Crisp Off-White #F5F5F7 */}
         <section
           id="hero-duo"
           className="bg-[#F5F5F7] pt-14 sm:pt-20 px-4 sm:px-6 text-center overflow-hidden"
@@ -878,7 +911,7 @@ function WealthResilienceAppleApp() {
         {/* 12PX PURE WHITE (#FFFFFF) GUTTER */}
         <div className="h-3 bg-white" />
 
-        {/* HERO 2: Pure OLED Black #000000 (iPhone 18 Pro / Giant PRO Chrome Reference) */}
+        {/* HERO 2: Pure OLED Black #000000 */}
         <section
           id="hero-pro"
           className="bg-[#000000] pt-14 sm:pt-20 pb-14 sm:pb-16 px-4 sm:px-6 text-center text-white overflow-hidden"
@@ -940,7 +973,7 @@ function WealthResilienceAppleApp() {
         {/* 12PX PURE WHITE (#FFFFFF) GUTTER */}
         <div className="h-3 bg-white" />
 
-        {/* HERO 3: Pure OLED Black #000000 (MacBook Pro / Layar PROLED XDR Reference) */}
+        {/* HERO 3: Pure OLED Black #000000 */}
         <section
           id="hero-inflasi"
           className="bg-[#000000] pt-14 sm:pt-20 px-4 sm:px-6 text-center text-white overflow-hidden"
@@ -1006,11 +1039,11 @@ function WealthResilienceAppleApp() {
         <div className="h-3 bg-white" />
 
         {/* ====================================================================
-            3. 2x2 EDGE-TO-EDGE APPLE PROMO GRID WITH 12PX WHITE (#FFFFFF) GUTTERS
+            3. 2x2 EDGE-TO-EDGE PROMO GRID WITH 12PX WHITE (#FFFFFF) GUTTERS
            ==================================================================== */}
         <section id="promo-grid" className="bg-white md:px-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white">
-            {/* TILE 1: Pure Black #000000 (Apple Watch Series 12 Dial Reference) */}
+            {/* TILE 1: Pure Black #000000 */}
             <div className="bg-[#000000] text-white px-6 pt-12 pb-10 flex flex-col items-center justify-between text-center min-h-[480px]">
               <div>
                 <div className="inline-flex items-center gap-1.5 text-xl sm:text-2xl font-bold tracking-tight">
@@ -1019,7 +1052,7 @@ function WealthResilienceAppleApp() {
                 </div>
               </div>
 
-              {/* Apple Watch OLED Biometric Heart & Emerald Ring Dial Visual */}
+              {/* OLED Biometric Heart & Emerald Ring Dial Visual */}
               <div className="my-6 flex items-center justify-center gap-4">
                 <div className="w-32 h-36 rounded-[30px] border-[3px] border-[#3A3A3C] bg-[#09090B] p-3 flex flex-col items-center justify-between shadow-[0_0_30px_rgba(244,63,94,0.2)]">
                   <div className="w-full flex justify-between text-[9px] text-zinc-500">
@@ -1070,7 +1103,7 @@ function WealthResilienceAppleApp() {
               </div>
             </div>
 
-            {/* TILE 2: Pure Black #000000 (Apple Watch Ultra 4 Titanium Reference) */}
+            {/* TILE 2: Pure Black #000000 */}
             <div className="bg-[#000000] text-white px-6 pt-12 pb-10 flex flex-col items-center justify-between text-center min-h-[480px]">
               <div>
                 <div className="inline-flex items-center gap-1.5 text-xl sm:text-2xl font-bold tracking-tight">
@@ -1167,7 +1200,7 @@ function WealthResilienceAppleApp() {
               </div>
             </div>
 
-            {/* TILE 4: Crisp Off-White #F5F5F7 (iPad mini Reference Style) */}
+            {/* TILE 4: Crisp Off-White #F5F5F7 */}
             <div className="bg-[#F5F5F7] text-[#1D1D1F] px-6 pt-12 pb-10 flex flex-col items-center justify-between text-center min-h-[460px]">
               <div className="max-w-sm">
                 <h3 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1D1D1F]">
@@ -1215,7 +1248,7 @@ function WealthResilienceAppleApp() {
         <div className="h-3 bg-white" />
 
         {/* ====================================================================
-            4. APPLE STORE-STYLE INTERACTIVE CONFIGURATOR CALCULATOR (#F5F5F7)
+            4. INTERACTIVE CONFIGURATOR CALCULATOR (#F5F5F7)
            ==================================================================== */}
         <section id="kalkulator" className="bg-[#F5F5F7] py-16 sm:py-24 px-4 sm:px-6">
           <div className="max-w-5xl mx-auto">
@@ -1240,7 +1273,7 @@ function WealthResilienceAppleApp() {
                     Langkah 01
                   </span>
                   <h3 className="text-lg font-bold text-[#1D1D1F]">
-                    Profil &amp; Arus Kas Bulanan
+                    Profil & Arus Kas Bulanan
                   </h3>
                 </div>
 
@@ -1680,7 +1713,7 @@ function WealthResilienceAppleApp() {
                       onClick={() => setIsUnlocked(true)}
                       className="text-xs font-medium text-[#6E6E73] hover:text-[#0071E3] underline underline-offset-4 transition"
                     >
-                      Lewati &amp; lihat rincian edukasi tanpa menyimpan data
+                      Lewati & lihat rincian edukasi tanpa menyimpan data
                     </button>
                   </div>
                 </div>
@@ -1811,7 +1844,7 @@ function WealthResilienceAppleApp() {
         </section>
       </main>
 
-      {/* Apple-Style Minimalist Footnote Footer */}
+      {/* Footnote Footer */}
       <footer className="bg-[#F5F5F7] border-t border-black/[0.08] py-8 px-4 sm:px-6 text-[11px] text-[#6E6E73]">
         <div className="max-w-[1024px] mx-auto space-y-3">
           <p>
